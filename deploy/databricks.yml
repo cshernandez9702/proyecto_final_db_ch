@@ -1,0 +1,47 @@
+bundle:
+  name: instacart-pipeline
+
+resources:
+  jobs:
+    instacart_pipeline:
+      name: instacart_pipeline
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"  
+        timezone_id: "America/Guayaquil"
+        pause_status: UNPAUSED
+
+      # Defino un cluster de trabajo reutilizable
+      job_clusters:
+        - job_cluster_key: small_ds4v3
+          new_cluster:
+            spark_version: 14.3.x-scala2.12
+            node_type_id: Standard_D4s_v3    
+            num_workers: 1                   
+            data_security_mode: SINGLE_USER   
+            runtime_engine: STANDARD         
+
+      tasks:
+        - task_key: bronze_to_silver
+          job_cluster_key: small_ds4v3
+          notebook_task:
+            notebook_path: /Workspace/Users/tianoh84@hotmail.com/proyecto_final_db_ch/process/bronze_to_silver.py 
+            base_parameters:
+              catalog: proyecto
+              schema_bronze: bronze
+              schema_silver: silver
+              path_silver: abfss://silver@adlscshm.dfs.core.windows.net/instacart/
+          max_retries: 2
+          timeout_seconds: 3600
+
+        - task_key: silver_to_gold
+          depends_on: [{ task_key: bronze_to_silver }]
+          job_cluster_key: small_ds4v3
+          notebook_task:
+            notebook_path: /Workspace/Users/tianoh84@hotmail.com/proyecto_final_db_ch/process/silver_to_gold.py
+            base_parameters:
+              catalog: proyecto
+              schema_silver: silver
+              schema_gold: gold
+              path_gold: abfss://gold@adlscshm.dfs.core.windows.net/instacart/
+          max_retries: 2
+          timeout_seconds: 3600
