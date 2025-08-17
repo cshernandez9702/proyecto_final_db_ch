@@ -1,6 +1,12 @@
 bundle:
   name: instacart-pipeline
 
+targets:
+  dev:
+    workspace:
+      host: https://adb-973423832512802.2.azuredatabricks.net   # tu URL de Databricks
+      root_path: /Users/tianoh84@hotmail.com/bundles/instacart-pipeline
+
 resources:
   jobs:
     instacart_pipeline:
@@ -24,7 +30,7 @@ resources:
         - task_key: bronze_to_silver
           job_cluster_key: small_ds4v3
           notebook_task:
-            notebook_path: /Workspace/Users/tianoh84@hotmail.com/proyecto_final_db_ch/process/bronze_to_silver.py 
+            notebook_path: /Users/tianoh84@hotmail.com/proyecto_final_db_ch/process/bronze_to_silver 
             base_parameters:
               catalog: proyecto
               schema_bronze: bronze
@@ -37,7 +43,7 @@ resources:
           depends_on: [{ task_key: bronze_to_silver }]
           job_cluster_key: small_ds4v3
           notebook_task:
-            notebook_path: /Workspace/Users/tianoh84@hotmail.com/proyecto_final_db_ch/process/silver_to_gold.py
+            notebook_path: /Users/tianoh84@hotmail.com/proyecto_final_db_ch/process/silver_to_gold
             base_parameters:
               catalog: proyecto
               schema_silver: silver
