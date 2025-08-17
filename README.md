@@ -5,6 +5,10 @@ Christian Sebastián Hernández Mosquera
 Curso: **Ingeniería de Datos e IA con Databricks**  
 Fecha: **16 de agosto de 2025**  
 
+## Repositorio github
+[REPOSITORIO GITHUB](https://github.com/cshernandez9702/proyecto_final_db_ch/tree/dev)
+
+
 ##  Descripción
 Este proyecto implementa un pipeline de datos basado en la **arquitectura Medallion (Raw → Bronze → Silver → Gold)** en **Azure Databricks**, usando el dataset de Instacart disponible en Kaggle:  
 [Instacart Market Basket Analysis](https://www.kaggle.com/datasets/psparks/instacart-market-basket-analysis).
